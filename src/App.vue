@@ -1,21 +1,32 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
+    <!-- <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" /> -->
+    <img alt="Vue logo" class="logo" src="./assets/travel.png" width="150" height="150" />
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <SearchLocation msg="Search your destination!" @search="handleSearchLocation"/>
     </div>
   </header>
 
   <main>
+    
     <TheWelcome />
   </main>
 </template>
+
+<script setup>
+import SearchLocation from './components/SearchLocation.vue'
+import TheWelcome from './components/TheWelcome.vue'
+import { forecasts } from './http/location-api';
+
+const handleSearchLocation = async (forecast) => {
+
+  const { data: response } = await forecasts(forecast)
+
+  console.log(response.data)
+}
+
+</script>
+
 
 <style scoped>
 header {
