@@ -1,35 +1,91 @@
-@import './base.css';
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+h1 {
+  font-weight: 500;
+  font-size: 1.5rem;
+  position: relative;
+  top: -10px;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+h3 {
+  font-size: 1.2rem;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.greetings h1,
+.greetings h3 {
+  text-align: center;
+  color: rgba(18, 131, 27, 0.589);
 }
 
 @media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+  .greetings h1,
+  .greetings h3 {
+    text-align: left;
   }
+}
+.iconImg {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #507f89;
+  border-radius: 10px;
+  background-color: #76a5af;
+}
+
+.cardNearby {
+  background-color: bisque;
+}
+
+.cardNearby .mh {
+  min-height: 80px;
+  max-height: 80px;
+}
+
+.cardNearby .aligned {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #356e6f;
+  flex-direction: column;
+}
+
+small {
+  font-size: 10px;
+  color: gray
+}
+
+.identifier {
+  color: rgb(121, 121, 121);
+}
+
+.cardWeather {
+  background-color: #b6d7a8;
+}
+
+.card-weather-div {
+  background-color: #f1f8ff;
+}
+
+h4 strong {
+  color: #5e7576;
+}
+
+.closedBucket {
+  font-size: 12px;
+  position: relative;
+}
+
+.ct {
+  font-size: 13px
+}
+
+.card-mh {
+  max-height: 120px;
+  min-height: 120px;
+  overflow-y: auto;
+}
+
+.card-body-mh-w {
+  max-height: 300px;
+  min-height: 300px;
+  overflow-y: auto;
+
 }

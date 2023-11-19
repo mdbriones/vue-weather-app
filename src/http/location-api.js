@@ -2,9 +2,9 @@ import api from "./api";
 
 const resource = "/location"
 
-export const forecasts = forecast => {
+export const getForecasts = searchText => {
     const config = {
-        params: forecast,
+        params: searchText,
         headers: {
             'Accept': 'application/json',
         }
@@ -13,6 +13,16 @@ export const forecasts = forecast => {
     return api.get(`${resource}/forecasts`, config)
 }
 
+export const getLocationNearby = searchText => {
+    const config = {
+        params: searchText,
+        headers: {
+            'Accept': 'application/json',
+        }
+    };
+
+    return api.get(`${resource}/nearbyPlaces`, config)
+}
 
 // export const createTask = task => api.post(resource, task)
 

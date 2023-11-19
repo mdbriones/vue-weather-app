@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { reactive } from 'vue';
 
 defineProps({
   msg: {
@@ -18,43 +18,17 @@ defineProps({
   }
 })
 
-const forecast= reactive({
+const searchText= reactive({
   location: ''
 })
 const emit = defineEmits(['search'])
 
 const searchLocation = event => {
   if (event.target.value.trim()) {
-    forecast.location = event.target.value
+    searchText.location = event.target.value
     event.target.value = ""
     
-    emit('search', forecast)
+    emit('search', searchText)
   }
 }
 </script>
-
-<style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 1.5rem;
-  position: relative;
-  top: -10px;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
-}
-
-@media (min-width: 1024px) {
-
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
-}
-</style>

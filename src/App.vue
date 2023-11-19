@@ -1,58 +1,84 @@
 <template>
-  <header>
-    <!-- <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" /> -->
-    <img alt="Vue logo" class="logo" src="./assets/travel.png" width="150" height="150" />
-    <div class="wrapper">
-      <SearchLocation msg="Search your destination!" @search="handleSearchLocation"/>
+  <div class="container text-center">
+    <div class="row justify-content-center">
+      <div class="col-auto">
+        <ImgLogo />
+        <SearchLocation msg="Search your destination!" @search="handleFetchWeatherInfo" />
+      </div>
     </div>
-  </header>
 
-  <main>
-    
-    <TheWelcome />
-  </main>
+    <!-- Nearby places of the searched place -->
+    <div class="row justify-content-center mt-4 w-100 p-3">
+      <div class="col-auto w-100">
+        <NearbyPlaces :nearbyPlaces="nearby_places" v-show="showNearby" />
+        <NotShowNearby :showNearby="showNearby" :noNearby="noNearby" />
+      </div>
+    </div>
+
+    <!-- Weather forecasts of the searched place -->
+    <div class="row justify-content-center mt-4 w-100 p-3">
+      <div class="col-auto w-100">
+        <Forecasts :forecastArray="weather_info" v-show="showForecasts" />
+        <NotShowForecast :showForecasts="showForecasts" :noCity="noCity" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref, computed } from 'vue'
+import { getForecasts, getLocationNearby } from './http/location-api';
+
 import SearchLocation from './components/SearchLocation.vue'
-import TheWelcome from './components/TheWelcome.vue'
-import { forecasts } from './http/location-api';
+import Forecasts from './components/Forecasts.vue'
+import NearbyPlaces from './components/NearbyPlaces.vue'
+import ImgLogo from './components/ImgLogo.vue'
+import NotShowNearby from './components/NotShowNearby.vue'
+import NotShowForecast from './components/NotShowForecast.vue'
 
-const handleSearchLocation = async (forecast) => {
+const city = ref([]);
+const weather_info = ref([])
+const nearby_places = ref([])
+const showForecastDiv = ref(true)
+const showNearbyDiv = ref(true)
 
-  const { data: response } = await forecasts(forecast)
+const handleFetchWeatherInfo = async (searchText) => {
 
-  console.log(response.data)
+  const { data: location_nearby_places } = await getLocationNearby(searchText)
+
+  if (Object.keys(location_nearby_places).length > 0) {
+    nearby_places.value = Object.entries(location_nearby_places.data.results)
+    // console.log(location_nearby_places.data.results)
+    showNearbyDiv.value = true;
+  } else {
+    showNearbyDiv.value = false
+  }
+
+  const { data: weather_forecasts } = await getForecasts(searchText)
+
+  if (Object.keys(weather_forecasts).length > 0 && Object.keys(weather_forecasts.data.city).length > 0) {
+    city.value = weather_forecasts.data.city
+    weather_info.value = weather_forecasts.data.weather_info
+    showForecastDiv.value = true;
+  } else {
+    city.value = {}
+    showForecastDiv.value = false
+  }
 }
 
+const showNearby = computed(
+  () => {
+    return Object.keys(city.value).length > 0
+  }
+)
+
+const showForecasts = computed(
+  () => {
+    return Object.keys(city.value).length > 0
+  }
+)
+
+const noCity = computed(() => showForecastDiv.value == false)
+const noNearby = computed(() => showNearbyDiv.value == false)
 </script>
 
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
